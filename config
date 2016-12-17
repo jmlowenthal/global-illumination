@@ -1,0 +1,9 @@
+case "$1" in
+	--cflags)
+		echo "-Iinclude -I../matrix"
+		;;
+	--lflags)
+		;;
+	--libs)
+		;;
+esac

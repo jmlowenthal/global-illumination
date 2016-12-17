@@ -1,0 +1,19 @@
+#pragma once
+
+#include "Matrix.h"
+#include "Material.h"
+#include "Ray.h"
+
+class Shape;
+#include "RaycastHit.h"
+
+class Shape {
+private:
+	Material m;
+
+public:
+	Material getMaterial() { return m; };
+
+	virtual RaycastHit intersect(Ray ray) = 0;
+	virtual Vector<3> getNormalAt(Vector<3> pos) = 0;
+};
