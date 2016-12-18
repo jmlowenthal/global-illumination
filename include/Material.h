@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef MATERIAL_H
+#define MATERIAL_H
+
 #include "Matrix.h"
 
 enum ReflectiveType {
@@ -16,3 +19,5 @@ public:
 	Vector<3> getColour() { return colour; };
 	ReflectiveType getType() { return type; };
 };
+
+#endif

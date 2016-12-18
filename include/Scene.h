@@ -1,13 +1,22 @@
 #pragma once
 
+#ifndef SCENE_H
+#define SCENE_H
+
+#include "Matrix.h"
 #include "Shape.h"
 #include "RaycastHit.h"
+#include <vector>
 
 class Scene {
 private:
-	std::list<Shape&> shapes;
+	std::vector<Shape*> shapes;
+	Vector<3> background = Vector<3>({0.3, 0.3, 0.3});
 
 public:
+	void add(Shape& s) { shapes.push_back(&s); };
 	Vector<3> trace(Ray ray, int depth);
 	RaycastHit intersect(Ray ray);
-}
+};
+
+#endif

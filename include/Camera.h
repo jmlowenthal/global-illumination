@@ -1,11 +1,13 @@
 #pragma once
 
+#ifndef CAMERA_H
+#define CAMERA_H
+
 #include "Matrix.h"
 #include "Ray.h"
 
 class Camera {
 private:
-	int width_px, height_px;
 	double aperture;
 	double focalLength;
 	double tanTheta;
@@ -13,5 +15,9 @@ private:
 	Vector<2> randInUnitDisk();
 
 public:
-	Ray cast(int x, int y);
-}
+	Camera(double a, double fl, double theta) :
+		aperture(a), focalLength(fl), tanTheta(tan(theta)) {}
+	Ray cast(double x, double y);
+};
+
+#endif
