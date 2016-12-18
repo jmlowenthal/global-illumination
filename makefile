@@ -4,8 +4,13 @@ CC=g++ -std=c++11
 RM=rm -f
 DEBUG=-g
 DEPDIR=.depend
+OBJDIR=build
+
+# Copy source folder structure to build and depend stores
 $(shell mkdir -p $(DEPDIR) >/dev/null)
 $(shell find src -type d -exec mkdir -p -- $(DEPDIR)/{} \;)
+$(shell mkdir -p $(OBJDIR) >/dev/null)
+$(shell find src -type d -exec mkdir -p -- $(OBJDIR)/{} \;)
 
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.dep.tmp
 
@@ -17,13 +22,13 @@ COMPILE = $(CC) $(DEBUG) $(DEPFLAGS) $(CFLAGS) -c -o $@
 POSTCOMPILE = mv -f $(DEPDIR)/$*.dep.tmp $(DEPDIR)/$*.dep
 
 SRCS=$(shell find src -type f -name *.cpp)
-OBJS=$(subst .cpp,.o,$(SRCS))
+OBJS=$(addprefix $(OBJDIR)/,$(subst .cpp,.o,$(SRCS)))
 
 .PHONY: all
 all: $(TARGET)
 
-%.o: %.cpp
-%.o: %.cpp $(DEPDIR)/%.dep
+$(OBJDIR)/%.o: %.cpp
+$(OBJDIR)/%.o: %.cpp $(DEPDIR)/%.dep
 	$(COMPILE) $<
 	$(POSTCOMPILE)
 
@@ -33,7 +38,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(DEBUG) $(LFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) -R $(OBJDIR)
 
 distclean: clean
 	$(RM) -R $(DEPDIR)
