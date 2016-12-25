@@ -11,7 +11,7 @@
 class Scene {
 private:
 	std::vector<Shape*> shapes;
-	Vector<3> background = Vector<3>({0.3, 0.3, 0.3});
+	Vector<3> background = Vector<3>();
 
 public:
 	void add(Shape& s) { shapes.push_back(&s); };

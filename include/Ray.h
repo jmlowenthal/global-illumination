@@ -19,7 +19,7 @@ public:
 	void setOrigin(Vector<3> v) { origin = v; };
 	void setDirection(Vector<3> v) { direction = v; };
 
-	Vector<3> evalute(double parameter) {
+	Vector<3> evaluate(double parameter) {
 		return origin + direction * parameter;
 	}
 };

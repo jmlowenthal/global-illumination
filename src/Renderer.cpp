@@ -1,17 +1,30 @@
 #include "Renderer.h"
-
-double clampf(double v) {
-    return v > 1.0 ? 1.0 : v < 0.0 ? 0.0 : v;
-}
+#include "Camera.h"
+#include "utils.h"
 
 Image Renderer::render(int w, int h) {
     Image img(w, h);
+
+    double invfactor = 2.0 / std::max(w, h);
+    double hw = w / 2.0, hh = h / 2.0;
+
     for (int x = 0; x < w; ++x) {
         for (int y = 0; y < h; ++y) {
             // Trace samples
             Vector<3> c;
             for (int i = 0; i < samples; ++i) {
-                c += scene.trace(camera.cast(x, y), depth);
+                Vector<2> pos({
+                    (x - hw), (y - hh)
+                });
+                pos += randInUnitDisk().resize<2, 1>();
+                pos *= invfactor;
+
+                c += scene.trace(
+                    camera.cast(
+                        pos.at_(0), pos.at_(1)
+                    ),
+                    depth
+                );
             }
             c /= samples;
 

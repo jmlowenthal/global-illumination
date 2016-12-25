@@ -12,12 +12,12 @@ private:
 	double focalLength;
 	double tanTheta;
 
-	Vector<2> randInUnitDisk();
-
 public:
-	Camera(double a, double fl, double theta) :
-		aperture(a), focalLength(fl), tanTheta(tan(theta)) {}
+	Camera(double a, double fl, double fov) :
+		aperture(a), focalLength(fl), tanTheta(tan(fov / 2)) {}
 	Ray cast(double x, double y);
 };
+
+Vector<3> randInUnitDisk();
 
 #endif

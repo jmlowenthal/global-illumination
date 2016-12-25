@@ -15,6 +15,8 @@ private:
 	ReflectiveType type;
 
 public:
+	Material() {};
+	Material(Vector<3> e, Vector<3> c, ReflectiveType t) : emission(e), colour(c), type(t) {};
 	Vector<3> getEmission() { return emission; };
 	Vector<3> getColour() { return colour; };
 	ReflectiveType getType() { return type; };

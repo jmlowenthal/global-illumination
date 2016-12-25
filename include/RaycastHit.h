@@ -6,6 +6,8 @@
 #include <limits>
 #include "Matrix.h"
 
+#define DBL_MAX std::numeric_limits<double>::max()
+
 class RaycastHit;
 #include "Shape.h"
 
@@ -16,8 +18,8 @@ private:
 	Shape* shape;
 
 public:
-	RaycastHit() : distance(std::numeric_limits<double>::max()) {}
-	RaycastHit(Shape& s) : shape(&s), distance(std::numeric_limits<double>::max()) {}
+	RaycastHit() : distance(DBL_MAX) {}
+	RaycastHit(Shape& s) : shape(&s), distance(DBL_MAX) {}
 	RaycastHit(Shape& s, double d, Vector<3> p) : shape(&s), distance(d), position(p) {};
 
 	double getDistance() { return distance; };

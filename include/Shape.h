@@ -16,6 +16,7 @@ private:
 
 public:
 	Material getMaterial() { return m; };
+	void setMaterial(Material mat) { m = mat; };
 
 	virtual RaycastHit intersect(Ray ray) = 0;
 	virtual Vector<3> getNormalAt(Vector<3> pos) = 0;
