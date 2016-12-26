@@ -2,6 +2,9 @@
 #include "Scene.h"
 #include "utils.h"
 
+#include <string>
+#include <sstream>
+
 #define BIAS 0.0001
 
 RaycastHit Scene::intersect(Ray ray) {
@@ -16,7 +19,9 @@ RaycastHit Scene::intersect(Ray ray) {
 }
 
 Vector<3> Scene::trace(Ray ray, int depth) {
-    if (depth < 1) return background;
+    if (depth < 1) {
+        return background;
+    }
 
     RaycastHit hit = intersect(ray);
     if (!hit.hasHit()) {
@@ -37,7 +42,8 @@ Vector<3> Scene::trace(Ray ray, int depth) {
 
         Vector<3> w = normall;
         Vector<3> u;
-        if (w.at_(1) != 0 || w.at_(2) != 0) {
+        // u = (if abs(w.x) > 0.1 then {0, 1, 0} else {1, 0, 0}) % w
+        /*if (w.at_(1) != 0 || w.at_(2) != 0) {
 			u = Vector<3>({0, -w.at_(2), w.at_(1)});
 		}
 		else if (w.at_(0) != 0 || w.at_(2) != 0) {
@@ -45,8 +51,15 @@ Vector<3> Scene::trace(Ray ray, int depth) {
 		}
 		else { // Hopefully not...
 			u = Vector<3>({1, 0, 0});
-		}
-		u = u.normalise();
+		}*/
+
+        if (fabs(w.at_(0)) > 0.1) {
+            u = Vector<3>({0, 1, 0});
+        }
+        else {
+            u = Vector<3>({1, 0, 0});
+        }
+        u = (u % w).normalise();
 
         Vector<3> v = w % u;
 

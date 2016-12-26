@@ -1,8 +1,9 @@
 case "$1" in
 	--cflags)
-		echo "-Iinclude -I../matrix"
+		echo "-fopenmp -Iinclude -I../matrix"
 		;;
 	--lflags)
+		echo "-fopenmp"
 		;;
 	--libs)
 		;;

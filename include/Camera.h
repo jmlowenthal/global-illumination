@@ -18,6 +18,6 @@ public:
 	Ray cast(double x, double y);
 };
 
-Vector<3> randInUnitDisk();
+Vector<2> randInUnitDisk();
 
 #endif

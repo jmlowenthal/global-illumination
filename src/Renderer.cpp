@@ -8,6 +8,7 @@ Image Renderer::render(int w, int h) {
     double invfactor = 2.0 / std::max(w, h);
     double hw = w / 2.0, hh = h / 2.0;
 
+    #pragma omp parallel for
     for (int x = 0; x < w; ++x) {
         for (int y = 0; y < h; ++y) {
             // Trace samples
@@ -16,14 +17,15 @@ Image Renderer::render(int w, int h) {
                 Vector<2> pos({
                     (x - hw), (y - hh)
                 });
-                pos += randInUnitDisk().resize<2, 1>();
+                pos += randInUnitDisk();
                 pos *= invfactor;
 
+                Ray ray = camera.cast(
+                    pos.at_(0), pos.at_(1)
+                );
+
                 c += scene.trace(
-                    camera.cast(
-                        pos.at_(0), pos.at_(1)
-                    ),
-                    depth
+                    ray, depth
                 );
             }
             c /= samples;

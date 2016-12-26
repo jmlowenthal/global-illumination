@@ -2,7 +2,6 @@ TARGET=global-illumination
 
 CC=g++ -std=c++11
 RM=rm -f
-DEBUG=-g
 DEPDIR=.depend
 OBJDIR=build
 
@@ -18,7 +17,7 @@ CFLAGS=$(shell bash config --cflags)
 LFLAGS=$(shell bash config --lflags)
 LIBS=$(shell bash config --libs)
 
-COMPILE = $(CC) $(DEBUG) $(DEPFLAGS) $(CFLAGS) -c -o $@
+COMPILE = $(CC) $(DEPFLAGS) $(CFLAGS) -c -o $@
 POSTCOMPILE = mv -f $(DEPDIR)/$*.dep.tmp $(DEPDIR)/$*.dep
 
 SRCS=$(shell find src -type f -name *.cpp)
@@ -28,13 +27,13 @@ OBJS=$(addprefix $(OBJDIR)/,$(subst .cpp,.o,$(SRCS)))
 all: $(TARGET)
 
 $(OBJDIR)/%.o: %.cpp
-$(OBJDIR)/%.o: %.cpp $(DEPDIR)/%.dep
+$(OBJDIR)/%.o: %.cpp $(DEPDIR)/%.dep config
 	$(COMPILE) $<
 	$(POSTCOMPILE)
 
 %.dep: ;
 
-$(TARGET): $(OBJS)
+$(TARGET): $(OBJS) config
 	$(CC) $(DEBUG) $(LFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
 
 clean:

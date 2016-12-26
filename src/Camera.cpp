@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include "utils.h"
 
-Vector<3> randInUnitDisk() {
+Vector<2> randInUnitDisk() {
     double a = 2 * randd() - 1;
     double b = 2 * randd() - 1;
     if (a == 0 && b == 0) a = 1e-5;
@@ -16,15 +16,14 @@ Vector<3> randInUnitDisk() {
         phi = (M_PI / 2) - (M_PI / 4) * (a / b);
     }
 
-    return Vector<3>({
+    return Vector<2>({
         r * cos(phi),
-        r * sin(phi),
-        0
+        r * sin(phi)
     });
 }
 
 Ray Camera::cast(double x, double y) {
-    Vector<3> origin = randInUnitDisk() * aperture;
+    Vector<3> origin = randInUnitDisk().resize<3, 1>() * aperture;
     Vector<3> direction({
         x * focalLength * tanTheta,
         y * focalLength * tanTheta,

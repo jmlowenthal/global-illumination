@@ -21,7 +21,7 @@
 int main(int argc, char** argv) {
     Scene scene;
 
-    int width = 100, height = 100;
+    int width = 800, height = 600;
     int samples = 4, depth = 16;
     double aperture = 0.0, focalLength = 100.0, fov = M_PI / 4;
 
@@ -94,7 +94,7 @@ int main(int argc, char** argv) {
     ));
     scene.add(s1);
 
-    Sphere light(Vector<3>({0, 2, -10}), 1);
+    Sphere light(Vector<3>({3, 5, 0}), 1);
     light.setMaterial(Material(
         Vector<3>({10, 10, 10}), Vector<3>({1, 1, 1}), DIFFUSE
     ));

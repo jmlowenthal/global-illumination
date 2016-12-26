@@ -8,6 +8,8 @@
 #include "RaycastHit.h"
 #include <vector>
 
+#include <fstream>
+
 class Scene {
 private:
 	std::vector<Shape*> shapes;
