@@ -20,7 +20,7 @@ LIBS=$(shell bash config --libs)
 COMPILE = $(CC) $(DEPFLAGS) $(CFLAGS) -c -o $@
 POSTCOMPILE = mv -f $(DEPDIR)/$*.dep.tmp $(DEPDIR)/$*.dep
 
-SRCS=$(shell find src -type f -name *.cpp)
+SRCS=$(shell find src -type f -name \*.cpp)
 OBJS=$(addprefix $(OBJDIR)/,$(subst .cpp,.o,$(SRCS)))
 
 .PHONY: all
@@ -35,6 +35,8 @@ $(OBJDIR)/%.o: %.cpp $(DEPDIR)/%.dep config
 
 $(TARGET): $(OBJS) config
 	$(CC) $(DEBUG) $(LFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
+
+config:;
 
 clean:
 	$(RM) -R $(OBJDIR)

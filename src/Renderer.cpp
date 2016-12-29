@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "Camera.h"
 #include "utils.h"
+#include <stdio.h>
 
 Image Renderer::render(int w, int h) {
     Image img(w, h);
@@ -8,8 +9,9 @@ Image Renderer::render(int w, int h) {
     double invfactor = 2.0 / std::max(w, h);
     double hw = w / 2.0, hh = h / 2.0;
 
-    #pragma omp parallel for
+    #pragma omp parallel for schedule(dynamic, 1)
     for (int x = 0; x < w; ++x) {
+        fprintf(stderr, "\rRendering %5.2f%%", 100.0 * x / (w - 1));
         for (int y = 0; y < h; ++y) {
             // Trace samples
             Vector<3> c;
@@ -36,5 +38,6 @@ Image Renderer::render(int w, int h) {
             img.setPixelB(x, y, clampf(c.at_(2)) * 255);
         }
     }
+    printf("\n");
     return img;
 }

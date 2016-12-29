@@ -43,16 +43,6 @@ Vector<3> Scene::trace(Ray ray, int depth) {
         Vector<3> w = normall;
         Vector<3> u;
         // u = (if abs(w.x) > 0.1 then {0, 1, 0} else {1, 0, 0}) % w
-        /*if (w.at_(1) != 0 || w.at_(2) != 0) {
-			u = Vector<3>({0, -w.at_(2), w.at_(1)});
-		}
-		else if (w.at_(0) != 0 || w.at_(2) != 0) {
-			u = Vector<3>({-w.at_(2), 0, w.at_(0)});
-		}
-		else { // Hopefully not...
-			u = Vector<3>({1, 0, 0});
-		}*/
-
         if (fabs(w.at_(0)) > 0.1) {
             u = Vector<3>({0, 1, 0});
         }

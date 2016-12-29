@@ -88,23 +88,43 @@ int main(int argc, char** argv) {
         }
     }
 
-    Sphere s1(Vector<3>({0, 0, -10}), 2);
-    s1.setMaterial(Material(
-        Vector<3>(), Vector<3>({0.9, 0, 0}), DIFFUSE
-    ));
-    scene.add(s1);
+    Material whiteDiffuse(
+        Vector<3>(), Vector<3>({0.75, 0.75, 0.75}), DIFFUSE
+    );
 
-    Sphere light(Vector<3>({3, 5, 0}), 1);
+    Plane back(Vector<3>({0, 0, -20}), Vector<3>({0, 0, 1}));
+    back.setMaterial(whiteDiffuse);
+    scene.add(back);
+
+    Plane front(Vector<3>({0, 0, 3}), Vector<3>({0, 0, -1}));
+    front.setMaterial(whiteDiffuse);
+    scene.add(front);
+
+    Plane floor(Vector<3>({0, -5, 0}), Vector<3>({0, 1, 0}));
+    floor.setMaterial(whiteDiffuse);
+    scene.add(floor);
+
+    Plane ceil(Vector<3>({0, 3, 0}), Vector<3>({0, -1, 0}));
+    ceil.setMaterial(whiteDiffuse);
+    scene.add(ceil);
+
+    Plane right(Vector<3>({5, 0, 0}), Vector<3>({-1, 0, 0}));
+    right.setMaterial(Material(
+        Vector<3>(), Vector<3>({0.25, 0.25, 0.75}), DIFFUSE
+    ));
+    scene.add(right);
+
+    Plane left(Vector<3>({-5, 0, 0}), Vector<3>({1, 0, 0}));
+    left.setMaterial(Material(
+        Vector<3>(), Vector<3>({0.75, 0.25, 0.25}), DIFFUSE
+    ));
+    scene.add(left);
+
+    Sphere light(Vector<3>({0, 103, -10}), 100.01);
     light.setMaterial(Material(
-        Vector<3>({10, 10, 10}), Vector<3>({1, 1, 1}), DIFFUSE
+        Vector<3>({12, 12, 12}), Vector<3>(), DIFFUSE
     ));
     scene.add(light);
-
-    Plane p1(Vector<3>({0, -1, 0}), Vector<3>({0, 1, 0}));
-    p1.setMaterial(Material(
-        Vector<3>(), Vector<3>({1, 1, 1}), DIFFUSE
-    ));
-    scene.add(p1);
 
     Camera camera(aperture, focalLength, fov);
     Renderer renderer(scene, camera, samples, depth);
