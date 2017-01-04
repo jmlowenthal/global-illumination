@@ -1,4 +1,12 @@
+.vscode
+.depend
+
 *.o
-.depend*
-.vscode*
+*.png
+*.out
 *.tga
+*.ppm
+
+global-illumination
+smallpt.cpp
+smallpt
