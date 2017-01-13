@@ -26,9 +26,7 @@ Image Renderer::render(int w, int h) {
                     pos.at_(0), pos.at_(1)
                 );
 
-                c += scene.trace(
-                    ray, depth
-                );
+                c += scene.trace(ray);
             }
             c /= samples;
 

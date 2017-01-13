@@ -18,7 +18,7 @@ private:
 
 public:
 	void add(Shape& s) { shapes[count++] = &s; };
-	Vector<3> trace(Ray ray, int depth);
+	Vector<3> trace(Ray ray, int depth = 0);
 	RaycastHit intersect(Ray ray);
 };
 

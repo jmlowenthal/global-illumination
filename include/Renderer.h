@@ -15,7 +15,7 @@ private:
 	int depth;
 
 public:
-	Renderer(Scene s, Camera c, int spp = 4, int d = 16) : scene(s), camera(c), samples(spp), depth(d) {};
+	Renderer(Scene s, Camera c, int spp = 4) : scene(s), camera(c), samples(spp) {};
 	Image render(int w, int h);
 };
 

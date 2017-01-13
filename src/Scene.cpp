@@ -28,10 +28,6 @@ Vector<3> Scene::trace(Ray ray, int depth) {
     Shape& shape = *hit.getShape();
     Material material = shape.getMaterial();
 
-    /*if (depth < 1) {
-        return material.getEmission();
-    }*/
-
     Vector<3> position = hit.getPosition();
     Vector<3> normal = shape.getNormalAt(position);
     Vector<3> normall = normal.dot(ray.getDirection()) < 0 ? normal : normal * -1;
@@ -72,12 +68,12 @@ Vector<3> Scene::trace(Ray ray, int depth) {
             direction = direction.normalise();
             Ray nr(position + direction * BIAS, direction);
 
-            return material.getEmission() + colour() * trace(nr, depth - 1); 
+            return material.getEmission() + colour() * trace(nr, depth + 1); 
         }
         case SPECULAR: {
             Vector<3> direction = ray.getDirection() - normal * 2 * normal.dot(ray.getDirection());
             Ray nr(position + direction * BIAS, direction);
-            return material.getEmission() + colour() * trace(nr, depth - 1);
+            return material.getEmission() + colour() * trace(nr, depth + 1);
         }
         case REFRACTIVE: {
             // SNELL'S LAW
@@ -93,7 +89,7 @@ Vector<3> Scene::trace(Ray ray, int depth) {
 
             // Quick return: Total internal reflection
             if (1 - c * c > sq(n2 / n1)) {
-                return material.getEmission() + colour() * trace(ray_reflect, depth - 1);
+                return material.getEmission() + colour() * trace(ray_reflect, depth + 1);
             }
             
             double r = n1 / n2;
@@ -116,17 +112,20 @@ Vector<3> Scene::trace(Ray ray, int depth) {
 
             // Russian Roulette
             double P = 0.25 + 0.5 * R;
-            if (randd() < P) {
-                return material.getEmission() + colour() * trace(ray_reflect, depth - 1) / P;
+            if (depth > 2) {
+                if (randd() < P) {
+                    return material.getEmission() + colour() * trace(ray_reflect, depth + 1) * R / P;
+                }
+                else {
+                    return material.getEmission() + colour() * trace(ray_refract, depth + 1) * T / (1 - P);
+                }
             }
             else {
-                return material.getEmission() + colour() * trace(ray_refract, depth - 1) / (1 - P);
+                return material.getEmission() + colour() * (
+                    trace(ray_reflect, depth + 1) * R +
+                    trace(ray_refract, depth + 1) * T
+                );
             }
-
-            return material.getEmission() + colour() * (
-                trace(ray_reflect, depth - 1) * R +
-                trace(ray_refract, depth - 1) * T
-            );
         }
         default:
             return material.getEmission();

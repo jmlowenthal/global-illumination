@@ -14,7 +14,6 @@
         -w <width>
         -h <height>
         -s <number of pixel samples>
-        -b <maximum number of bounces>
         -a <camera aperture>
         -f <focal length>
         -v <field of view>
@@ -32,7 +31,7 @@ int main(int argc, char** argv) {
     Scene scene;
 
     int width = 800, height = 600;
-    int samples = 16, depth = 16;
+    int samples = 16;
     double aperture = 0.0, focalLength = 100.0, fov = M_PI / 5;
 
     if (argc > 1) {
@@ -56,12 +55,6 @@ int main(int argc, char** argv) {
                         case 's': {
                             if (i - start > 1) {
                                 samples = std::stoi(argv[start + 1]);
-                            }
-                            break;
-                        }
-                        case 'b': {
-                            if (i - start > 1) {
-                                depth = std::stoi(argv[start + 1]);
                             }
                             break;
                         }
@@ -151,7 +144,7 @@ int main(int argc, char** argv) {
     srand(time(NULL));
 
     Camera camera(aperture, focalLength, fov);
-    Renderer renderer(scene, camera, samples, depth);
+    Renderer renderer(scene, camera, samples);
     Image image = renderer.render(width, height);
     TGAImageWriter writer("output.tga");
     writer.write(image);
