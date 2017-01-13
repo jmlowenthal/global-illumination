@@ -28,14 +28,23 @@ Vector<3> Scene::trace(Ray ray, int depth) {
     Shape& shape = *hit.getShape();
     Material material = shape.getMaterial();
 
-    if (depth < 1) {
+    /*if (depth < 1) {
         return material.getEmission();
-    }
+    }*/
 
     Vector<3> position = hit.getPosition();
     Vector<3> normal = shape.getNormalAt(position);
     Vector<3> normall = normal.dot(ray.getDirection()) < 0 ? normal : normal * -1;
     Vector<3> colour = material.getColour();
+
+    // Russian Roulette
+    double M = std::max(colour.at_(0), std::max(colour.at_(1), colour.at_(2)));
+    if (randd() > M) {
+        return material.getEmission();
+    }
+    else {
+        colour /= M;
+    }
 
     switch (material.getType()) {
         case DIFFUSE: {
@@ -104,6 +113,15 @@ Vector<3> Scene::trace(Ray ray, int depth) {
 
             double R = R0 + (1 - R0) * costerm * costerm * costerm * costerm * costerm;
             double T = 1 - R;
+
+            // Russian Roulette
+            double P = 0.25 + 0.5 * R;
+            if (randd() < P) {
+                return material.getEmission() + colour() * trace(ray_reflect, depth - 1) / P;
+            }
+            else {
+                return material.getEmission() + colour() * trace(ray_refract, depth - 1) / (1 - P);
+            }
 
             return material.getEmission() + colour() * (
                 trace(ray_reflect, depth - 1) * R +
