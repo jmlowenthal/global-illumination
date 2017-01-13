@@ -152,7 +152,7 @@ int main(int argc, char** argv) {
 
     Camera camera(aperture, focalLength, fov);
     Renderer renderer(scene, camera, samples, depth);
-    Image& image = renderer.render(width, height);
+    Image image = renderer.render(width, height);
     TGAImageWriter writer("output.tga");
     writer.write(image);
 }
