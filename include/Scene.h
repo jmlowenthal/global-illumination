@@ -6,17 +6,18 @@
 #include "Matrix.h"
 #include "Shape.h"
 #include "RaycastHit.h"
-#include <vector>
+#include <array>
 
 #include <fstream>
 
 class Scene {
 private:
-	std::vector<Shape*> shapes;
-	Vector<3> background = Vector<3>({0.5, 0.5, 0.5});
+	int count = 0;
+	std::array<Shape*, 32> shapes = {}; // nullptr array
+	Vector<3> background;
 
 public:
-	void add(Shape& s) { shapes.push_back(&s); };
+	void add(Shape& s) { shapes[count++] = &s; };
 	Vector<3> trace(Ray ray, int depth);
 	RaycastHit intersect(Ray ray);
 };

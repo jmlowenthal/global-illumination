@@ -6,6 +6,8 @@
 #include "Plane.h"
 
 #include <string>
+#include <random>
+#include <ctime>
 
 /*
     Command line arguments:
@@ -18,12 +20,20 @@
         -v <field of view>
 */
 
+/*
+PROFILING
+- Compile and link with -pg flag
+- Run once
+- Use gprof -b -p for flat profile
+- Use gprof -b -q for tree profile
+*/
+
 int main(int argc, char** argv) {
     Scene scene;
 
     int width = 800, height = 600;
-    int samples = 4, depth = 16;
-    double aperture = 0.0, focalLength = 100.0, fov = M_PI / 4;
+    int samples = 16, depth = 16;
+    double aperture = 0.0, focalLength = 100.0, fov = M_PI / 5;
 
     if (argc > 1) {
         int start = 1;
@@ -100,7 +110,7 @@ int main(int argc, char** argv) {
     front.setMaterial(whiteDiffuse);
     scene.add(front);
 
-    Plane floor(Vector<3>({0, -5, 0}), Vector<3>({0, 1, 0}));
+    Plane floor(Vector<3>({0, -3, 0}), Vector<3>({0, 1, 0}));
     floor.setMaterial(whiteDiffuse);
     scene.add(floor);
 
@@ -108,27 +118,41 @@ int main(int argc, char** argv) {
     ceil.setMaterial(whiteDiffuse);
     scene.add(ceil);
 
-    Plane right(Vector<3>({5, 0, 0}), Vector<3>({-1, 0, 0}));
+    Plane right(Vector<3>({3.5, 0, 0}), Vector<3>({-1, 0, 0}));
     right.setMaterial(Material(
         Vector<3>(), Vector<3>({0.25, 0.25, 0.75}), DIFFUSE
     ));
     scene.add(right);
 
-    Plane left(Vector<3>({-5, 0, 0}), Vector<3>({1, 0, 0}));
+    Plane left(Vector<3>({-3.5, 0, 0}), Vector<3>({1, 0, 0}));
     left.setMaterial(Material(
         Vector<3>(), Vector<3>({0.75, 0.25, 0.25}), DIFFUSE
     ));
     scene.add(left);
 
-    Sphere light(Vector<3>({0, 103, -10}), 100.01);
+    Sphere light(Vector<3>({0, 103, -15}), 100.005);
     light.setMaterial(Material(
         Vector<3>({12, 12, 12}), Vector<3>(), DIFFUSE
     ));
     scene.add(light);
 
+    Sphere mirrored(Vector<3>({-1, -1.5, -18}), 1.5);
+    mirrored.setMaterial(Material(
+        Vector<3>(), Vector<3>({.9, .9, .9}), SPECULAR
+    ));
+    scene.add(mirrored);
+
+    Sphere glassed(Vector<3>({1, -2, -14}), 1);
+    glassed.setMaterial(Material(
+        Vector<3>(), Vector<3>({.9, .9, .9}), REFRACTIVE
+    ));
+    scene.add(glassed);
+
+    srand(time(NULL));
+
     Camera camera(aperture, focalLength, fov);
     Renderer renderer(scene, camera, samples, depth);
+    Image& image = renderer.render(width, height);
     TGAImageWriter writer("output.tga");
-    Image image = renderer.render(width, height);
     writer.write(image);
 }

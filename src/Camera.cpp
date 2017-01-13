@@ -29,6 +29,5 @@ Ray Camera::cast(double x, double y) {
         y * focalLength * tanTheta,
         -focalLength
     });
-    
     return Ray(origin, (direction - origin).normalise());
 }
