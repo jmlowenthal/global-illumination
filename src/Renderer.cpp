@@ -6,8 +6,8 @@
 Image Renderer::render(int w, int h) {
     Image img(w, h);
 
-    double invfactor = 2.0 / std::max(w, h);
-    double hw = w / 2.0, hh = h / 2.0;
+    const double invfactor = 2.0 / std::max(w, h);
+    const double hw = w / 2.0, hh = h / 2.0;
 
     #pragma omp parallel for schedule(dynamic, 1)
     for (int x = 0; x < w; ++x) {

@@ -5,6 +5,8 @@
 #include "Sphere.h"
 #include "Plane.h"
 
+#include "utils.h"
+
 #include <string>
 #include <random>
 #include <ctime>
@@ -91,55 +93,22 @@ int main(int argc, char** argv) {
         }
     }
 
-    Material whiteDiffuse(
-        Vector<3>(), Vector<3>({0.75, 0.75, 0.75}), DIFFUSE
-    );
-
-    Plane back(Vector<3>({0, 0, -20}), Vector<3>({0, 0, 1}));
-    back.setMaterial(whiteDiffuse);
-    scene.add(back);
-
-    Plane front(Vector<3>({0, 0, 3}), Vector<3>({0, 0, -1}));
-    front.setMaterial(whiteDiffuse);
-    scene.add(front);
-
-    Plane floor(Vector<3>({0, -3, 0}), Vector<3>({0, 1, 0}));
-    floor.setMaterial(whiteDiffuse);
+    Plane floor(Vector<3>({0, -2, 0}), Vector<3>({0, 1, 0}));
+    floor.setMaterial(Material(
+        Vector<3>(), Vector<3>({.5, .5, .5}), DIFFUSE
+    ));
     scene.add(floor);
 
-    Plane ceil(Vector<3>({0, 3, 0}), Vector<3>({0, -1, 0}));
-    ceil.setMaterial(whiteDiffuse);
-    scene.add(ceil);
-
-    Plane right(Vector<3>({3.5, 0, 0}), Vector<3>({-1, 0, 0}));
-    right.setMaterial(Material(
-        Vector<3>(), Vector<3>({0.25, 0.25, 0.75}), DIFFUSE
-    ));
-    scene.add(right);
-
-    Plane left(Vector<3>({-3.5, 0, 0}), Vector<3>({1, 0, 0}));
-    left.setMaterial(Material(
-        Vector<3>(), Vector<3>({0.75, 0.25, 0.25}), DIFFUSE
-    ));
-    scene.add(left);
-
-    Sphere light(Vector<3>({0, 103, -15}), 100.005);
-    light.setMaterial(Material(
-        Vector<3>({12, 12, 12}), Vector<3>(), DIFFUSE
-    ));
-    scene.add(light);
-
-    Sphere mirrored(Vector<3>({-1, -1.5, -18}), 1.5);
-    mirrored.setMaterial(Material(
-        Vector<3>(), Vector<3>({.9, .9, .9}), SPECULAR
-    ));
-    scene.add(mirrored);
-
-    Sphere glassed(Vector<3>({1, -2, -14}), 1);
-    glassed.setMaterial(Material(
-        Vector<3>(), Vector<3>({.9, .9, .9}), REFRACTIVE
-    ));
-    scene.add(glassed);
+    Sphere spheres[20];
+    for (int i = 0; i < 20; ++i) {
+        spheres[i] = Sphere(
+            Vector<3>({3, -0.5, -i * 10.0}), 1.5
+        );
+        spheres[i].setMaterial(Material(
+             Vector<3>(), Vector<3>({randd(), randd(), randd()}), DIFFUSE
+        ));
+        scene.add(spheres[i]);
+    }
 
     srand(time(NULL));
 

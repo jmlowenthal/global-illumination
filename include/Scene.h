@@ -14,7 +14,7 @@ class Scene {
 private:
 	int count = 0;
 	std::array<Shape*, 32> shapes = {}; // nullptr array
-	Vector<3> background;
+	Vector<3> background = Vector<3>({0.9, 0.9, 0.9});
 
 public:
 	void add(Shape& s) { shapes[count++] = &s; };

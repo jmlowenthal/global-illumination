@@ -11,6 +11,7 @@ private:
 	double radius;
 
 public:
+	Sphere() : position(), radius(0) {};
 	Sphere(Vector<3> p, double r) : position(p), radius(r) {};
 	virtual RaycastHit intersect(Ray ray);
 	virtual Vector<3> getNormalAt(Vector<3> pos);
